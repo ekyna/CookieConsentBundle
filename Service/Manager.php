@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Ekyna\Bundle\CookieConsentBundle\Entity\CookieConsent;
 use Ekyna\Bundle\CookieConsentBundle\Form\Type\CookieConsentType;
@@ -20,56 +23,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class Manager
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack            $requestStack;
+    private FormFactoryInterface    $formFactory;
+    private UrlGeneratorInterface   $urlGenerator;
+    private EntityManagerInterface  $entityManager;
+    private ConfigProviderInterface $configProvider;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private ?array $config = null;
+    private ?array $data   = null;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var ConfigProviderInterface
-     */
-    private $configProvider;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var array The cookie data
-     */
-    private $data;
-
-
-    /**
-     * Constructor.
-     *
-     * @param RequestStack            $requestStack
-     * @param FormFactoryInterface    $formFactory
-     * @param UrlGeneratorInterface   $urlGenerator
-     * @param EntityManagerInterface  $entityManager
-     * @param ConfigProviderInterface $configProvider
-     */
     public function __construct(
-        RequestStack $requestStack,
-        FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator,
-        EntityManagerInterface $entityManager,
+        RequestStack            $requestStack,
+        FormFactoryInterface    $formFactory,
+        UrlGeneratorInterface   $urlGenerator,
+        EntityManagerInterface  $entityManager,
         ConfigProviderInterface $configProvider
     ) {
         $this->requestStack = $requestStack;
@@ -81,8 +48,6 @@ class Manager
 
     /**
      * Returns the configuration.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -95,8 +60,6 @@ class Manager
 
     /**
      * Returns the cookie consent form.
-     *
-     * @return FormInterface
      */
     public function getForm(): FormInterface
     {
@@ -108,21 +71,11 @@ class Manager
     }
 
     /**
-     * Handles the cookie consent form.
-     */
-    public function handleForm()
-    {
-        // TODO
-    }
-
-    /**
      * Saves the user cookie consent.
      *
-     * @param Response $response
-     * @param string[] $categories The category names allowed by the user
-     * @param string   $ip         The user key
-     *
-     * @throws \Exception
+     * @param Response    $response
+     * @param string[]    $categories The category names allowed by the user
+     * @param string|null $ip         The user key
      */
     public function saveCookieConsent(Response $response, array $categories, string $ip = null): void
     {
@@ -134,7 +87,7 @@ class Manager
 
         $this->setCookieData($data);
 
-        $cookie = new Cookie($this->getConfig()['name'], json_encode($data), new \DateTime('+1 year'), '/', null, null, true, true);
+        $cookie = new Cookie($this->getConfig()['name'], json_encode($data), new DateTime('+1 year'), '/', null, null, true, true);
         $response->headers->setCookie($cookie);
 
         $response->setContent(json_encode(['reload' => $reload]));
@@ -160,8 +113,6 @@ class Manager
 
     /**
      * Check if cookie consent has already been saved.
-     *
-     * @return bool
      */
     public function isContentSaved(): bool
     {
@@ -170,10 +121,6 @@ class Manager
 
     /**
      * Check if given cookie category is permitted by user.
-     *
-     * @param string $category
-     *
-     * @return bool
      */
     public function isCategoryAllowed(string $category): bool
     {
@@ -184,8 +131,6 @@ class Manager
 
     /**
      * Sets the cookie data.
-     *
-     * @param array $data
      */
     protected function setCookieData(array $data): void
     {
@@ -194,8 +139,6 @@ class Manager
 
     /**
      * Returns the cookie data.
-     *
-     * @return array
      */
     protected function getCookieData(): array
     {
@@ -204,7 +147,7 @@ class Manager
         }
 
         if ($this->isContentSaved()) {
-            $data = @json_decode($this->getRequest()->cookies->get($this->getConfig()['name'], '{}'), true);
+            $data = json_decode($this->getRequest()->cookies->get($this->getConfig()['name'], '{}'), true);
 
             if (!empty($data)) {
                 return $this->data = $data;
@@ -216,8 +159,6 @@ class Manager
 
     /**
      * Returns the category names.
-     *
-     * @return array
      */
     public function getCategories(): array
     {
@@ -226,8 +167,6 @@ class Manager
 
     /**
      * Returns the default data.
-     *
-     * @return array
      */
     private function getDefaultData(): array
     {
@@ -245,8 +184,6 @@ class Manager
 
     /**
      * Returns the current request.
-     *
-     * @return Request
      */
     private function getRequest(): Request
     {

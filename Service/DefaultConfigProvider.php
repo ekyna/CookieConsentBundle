@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service;
 
 use Ekyna\Bundle\CookieConsentBundle\Model\Category;
@@ -11,35 +13,18 @@ use Ekyna\Bundle\CookieConsentBundle\Model\Category;
  */
 class DefaultConfigProvider implements ConfigProviderInterface
 {
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
-
-    /**
-     * Constructor.
-     *
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         $this->config = array_replace($this->getDefault(), $config);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function get(): array
     {
         return $this->config;
     }
 
-    /**
-     * Returns the default config.
-     *
-     * @return array
-     */
     private function getDefault(): array
     {
         return [

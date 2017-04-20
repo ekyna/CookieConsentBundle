@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Model;
 
 /**
@@ -9,14 +11,12 @@ namespace Ekyna\Bundle\CookieConsentBundle\Model;
  */
 final class Position
 {
-    const CENTERED     = 'centered';
-    const BOTTOM_RIGHT = 'bottom-right';
+    public const CENTERED     = 'centered';
+    public const BOTTOM_RIGHT = 'bottom-right';
 
 
     /**
      * Returns the position choices (for form).
-     *
-     * @return array
      */
     public static function getChoices(): array
     {
@@ -28,8 +28,6 @@ final class Position
 
     /**
      * Returns all the position constants.
-     *
-     * @return array
      */
     public static function getConstants(): array
     {
@@ -41,13 +39,13 @@ final class Position
 
     /**
      * Returns whether the given position is valid.
-     *
-     * @param string $position
-     *
-     * @return bool
      */
     public static function isValid(string $position): bool
     {
         return in_array($position, self::getConstants(), true);
+    }
+
+    private function __construct()
+    {
     }
 }

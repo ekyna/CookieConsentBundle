@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service\Setting;
 
 use Ekyna\Bundle\CookieConsentBundle\Service\DefaultConfigProvider;
-use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
+use Ekyna\Bundle\SettingBundle\Manager\SettingManagerInterface;
 use Ekyna\Component\Resource\Locale\LocaleProviderAwareTrait;
 
 /**
@@ -15,30 +17,14 @@ class SettingConfigProvider extends DefaultConfigProvider
 {
     use LocaleProviderAwareTrait;
 
-    /**
-     * @var SettingsManagerInterface
-     */
-    private $setting;
+    private SettingManagerInterface $setting;
+    private ?array                  $config = null;
 
-    /**
-     * @var array
-     */
-    private $config;
-
-
-    /**
-     * Sets the setting manager.
-     *
-     * @param SettingsManagerInterface $setting
-     */
-    public function setSettingManager(SettingsManagerInterface $setting)
+    public function setSettingManager(SettingManagerInterface $setting): void
     {
         $this->setting = $setting;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function get(): array
     {
         if ($this->config) {
@@ -46,12 +32,13 @@ class SettingConfigProvider extends DefaultConfigProvider
         }
 
         $config = parent::get();
+
         $locale = $this->localeProvider->getCurrentLocale();
 
         $config['position'] = $this->setting->getParameter('cookies.position');
         $config['backdrop'] = $this->setting->getParameter('cookies.backdrop');
         foreach (['title', 'intro'] as $parameter) {
-            $value = $title = $this->setting->getParameter('cookies.' . $parameter, $locale);
+            $value = $this->setting->getParameter('cookies.' . $parameter, $locale);
             if (empty($value)) {
                 continue;
             }

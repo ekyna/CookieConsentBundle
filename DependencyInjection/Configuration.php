@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\DependencyInjection;
 
 use Ekyna\Bundle\CookieConsentBundle\Model\Category;
@@ -14,13 +16,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ekyna_cookie_consent');
+        $treeBuilder = new TreeBuilder('ekyna_cookie_consent');
+
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->addDefaultsIfNotSet()
@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(Category::getDefault())
                 ->end()
                 ->booleanNode('persist')
-                    ->defaultTrue()
+                    ->defaultFalse()
                 ->end()
             ->end()
         ;

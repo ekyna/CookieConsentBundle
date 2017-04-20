@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service;
 
 /**
@@ -11,8 +13,6 @@ interface ConfigProviderInterface
 {
     /**
      * Returns the configuration.
-     *
-     * @return array
      */
     public function get(): array;
 }

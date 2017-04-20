@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\DependencyInjection;
 
 use Ekyna\Bundle\CookieConsentBundle\Service\ConfigProviderInterface;
 use Ekyna\Bundle\CookieConsentBundle\Service\Setting\CookiesSettingSchema;
 use Ekyna\Bundle\CookieConsentBundle\Service\Setting\SettingConfigProvider;
-use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
-use Ekyna\Component\Resource\Locale\LocaleProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
+use Ekyna\Bundle\SettingBundle\Manager\SettingManagerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * Class EkynaCookieConsentExtension
@@ -20,19 +22,15 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class EkynaCookieConsentExtension extends Extension
 {
-    /**
-     * @inheritDoc
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
 
         $container
-            ->getDefinition(ConfigProviderInterface::class)
+            ->getDefinition('ekyna_cookie_consent.provider.config')
             ->replaceArgument(0, $config);
 
         $this->configureSetting($container);
@@ -40,8 +38,6 @@ class EkynaCookieConsentExtension extends Extension
 
     /**
      * Configures the setting service (with EkynaSettingBundle).
-     *
-     * @param ContainerBuilder $container
      */
     private function configureSetting(ContainerBuilder $container): void
     {
@@ -51,17 +47,17 @@ class EkynaCookieConsentExtension extends Extension
         }
 
         $container
-            ->register(CookiesSettingSchema::class)
+            ->register('ekyna_cookie_consent.setting_schema', CookiesSettingSchema::class)
             ->setPublic(false)
-            ->addTag('ekyna_setting.schema', [
+            ->addTag(RegisterSchemasPass::TAG, [
                 'namespace' => 'cookies',
                 'position'  => 11,
             ]);
 
         $container
-            ->getDefinition(ConfigProviderInterface::class)
+            ->getDefinition('ekyna_cookie_consent.provider.config')
             ->setClass(SettingConfigProvider::class)
-            ->addMethodCall('setSettingManager', [new Reference(SettingsManagerInterface::class)])
-            ->addMethodCall('setLocaleProvider', [new Reference(LocaleProviderInterface::class)]);
+            ->addMethodCall('setSettingManager', [new Reference('ekyna_setting.manager')])
+            ->addMethodCall('setLocaleProvider', [new Reference('ekyna_resource.provider.locale')]);
     }
 }

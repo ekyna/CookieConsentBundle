@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Model;
 
 /**
@@ -9,16 +11,14 @@ namespace Ekyna\Bundle\CookieConsentBundle\Model;
  */
 final class Category
 {
-    const NECESSARY      = 'necessary';
-    const ANALYTIC       = 'analytic';
-    const MARKETING      = 'marketing';
-    const SOCIAL_NETWORK = 'social_network';
+    public const NECESSARY      = 'necessary';
+    public const ANALYTIC       = 'analytic';
+    public const MARKETING      = 'marketing';
+    public const SOCIAL_NETWORK = 'social_network';
 
 
     /**
      * Returns all the categories constants.
-     *
-     * @return array
      */
     public static function getConstants(): array
     {
@@ -32,8 +32,6 @@ final class Category
 
     /**
      * Returns the default available categories constants.
-     *
-     * @return array
      */
     public static function getDefault(): array
     {
@@ -46,8 +44,6 @@ final class Category
 
     /**
      * Returns all the category choices (for form).
-     *
-     * @return array
      */
     public static function getChoices(): array
     {
@@ -63,13 +59,13 @@ final class Category
 
     /**
      * Returns whether the given category is valid.
-     *
-     * @param string $category
-     *
-     * @return bool
      */
     public static function isValid(string $category): bool
     {
         return in_array($category, self::getConstants(), true);
+    }
+
+    private function __construct()
+    {
     }
 }

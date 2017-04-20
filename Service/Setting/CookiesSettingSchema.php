@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service\Setting;
 
 use Ekyna\Bundle\CookieConsentBundle\Model\Position;
@@ -13,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Contracts\Translation\TranslatableInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class CookiesSettingSchema
@@ -23,11 +28,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
 {
     use LocalizedSchemaTrait;
 
-
-    /**
-     * @inheritdoc
-     */
-    public function buildSettings(SettingsBuilder $builder)
+    public function buildSettings(SettingsBuilder $builder): void
     {
         $builder
             ->setDefaults(array_merge([
@@ -43,18 +44,16 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
             ->setAllowedValues('position', Position::getConstants());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('position', Type\ChoiceType::class, [
-                'label'       => 'setting.position',
-                'required'    => true,
-                'multiple'    => false,
-                'choices'     => Position::getChoices(),
-                'constraints' => [
+                'label'                     => t('setting.position', [], 'EkynaCookieConsent'),
+                'required'                  => true,
+                'multiple'                  => false,
+                'choices'                   => Position::getChoices(),
+                'choice_translation_domain' => 'EkynaCookieConsent',
+                'constraints'               => [
                     new Constraints\NotNull(),
                     new Constraints\Choice([
                         'callback' => [Position::class, 'getConstants'],
@@ -62,7 +61,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                 ],
             ])
             ->add('backdrop', Type\CheckboxType::class, [
-                'label'       => 'setting.backdrop',
+                'label'       => t('setting.backdrop', [], 'EkynaCookieConsent'),
                 'required'    => false,
                 'attr'        => [
                     'align_with_widget' => true,
@@ -72,7 +71,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                 ],
             ])
             ->add('title', I18nParameterType::class, [
-                'label'        => 'setting.title',
+                'label'        => t('setting.title', [], 'EkynaCookieConsent'),
                 'required'     => false,
                 'form_type'    => Type\TextareaType::class,
                 'form_options' => [
@@ -81,7 +80,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                 ],
             ])
             ->add('intro', I18nParameterType::class, [
-                'label'        => 'setting.intro',
+                'label'        => t('setting.intro', [], 'EkynaCookieConsent'),
                 'required'     => false,
                 'form_type'    => Type\TextareaType::class,
                 'form_options' => [
@@ -91,34 +90,22 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
             ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('translation_domain', 'EkynaCookieConsent');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getLabel()
+    public function getLabel(): TranslatableInterface
     {
-        return ['setting.label', 'EkynaCookieConsent'];
+        return t('setting.label', [], 'EkynaCookieConsent');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getShowTemplate()
+    public function getShowTemplate(): string
     {
         return '@EkynaCookieConsent/Setting/show.html.twig';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@EkynaCookieConsent/Setting/form.html.twig';
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Service;
 
 use Twig\Environment;
@@ -11,35 +13,22 @@ use Twig\Environment;
  */
 class Renderer
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
+    private Manager $manager;
 
-    /**
-     * @var Manager
-     */
-    private $manager;
-
-
-    /**
-     * Constructor.
-     *
-     * @param Environment $twig
-     * @param Manager     $manager
-     */
     public function __construct(Environment $twig, Manager $manager)
     {
         $this->twig = $twig;
         $this->manager = $manager;
     }
 
+    public function isCategoryAllowed(string $category): bool
+    {
+        return $this->isCategoryAllowed($category);
+    }
+
     /**
      * Renders the cookie consent widget.
-     *
-     * @param array $options
-     *
-     * @return string
      */
     public function render(array $options = []): string
     {

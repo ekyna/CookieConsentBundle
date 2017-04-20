@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\CookieConsentBundle\Controller;
 
 use Ekyna\Bundle\CookieConsentBundle\Service\Manager;
@@ -13,30 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CookieController
 {
-    /**
-     * @var Manager
-     */
-    private $manager;
+    private Manager $manager;
 
-
-    /**
-     * Constructor.
-     *
-     * @param Manager $manager
-     */
     public function __construct(Manager $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * Cookie consent form submission.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     * @throws \Exception
-     */
     public function submit(Request $request): Response
     {
         $form = $this->manager->getForm();
