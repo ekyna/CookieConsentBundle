@@ -1,0 +1,3 @@
+ekyna_cookie_consent_submit:
+    path: /cookie-consent/submit
+    controller: Ekyna\Bundle\CookieConsentBundle\Controller\CookieController::submit

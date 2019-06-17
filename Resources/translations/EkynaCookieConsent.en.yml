@@ -1,0 +1,40 @@
+title: Cookies on our website
+intro: This website uses cookies to ensure you get the best experience on our website.
+read_more: Read more
+settings: Settings
+choice:
+    deny: Deny
+    allow: Allow
+button:
+    all: Accept all
+    submit: Save
+position:
+    centered: Centered
+    bottom-right: Bottom right
+setting:
+    label: Cookies
+    position: Position
+    categories: Categories
+    title: Title
+    intro: Intro
+category:
+    necessary:
+        title: Necessary cookies
+        description: >
+            Some cookies are required to provide core functionality.
+            This website won't function properly without these cookies and they are enabled by default.
+    analytic:
+        title: Analytical cookies
+        description: >
+            Analytical cookies help us improve our website by
+            collecting and reporting anonymous information on its usage.
+    marketing:
+        title: Marketing cookies
+        description: >
+            Marketing cookies are used to track visitors across
+            websites to allow publishers to display relevant ads.
+    social_network:
+        title: Social network cookies
+        description: >
+            These cookies allow you to use functionality provided
+            by social networks, like sign in and share content with other people.

@@ -1,0 +1,18 @@
+{% block choice_row %}
+    <div class="category">
+        <div class="information">
+            <p class="title">
+                {{- ('category.'~name~'.title')|trans({}, 'EkynaCookieConsent') -}}
+            </p>
+            <p class="description">
+                {{- ('category.'~name~'.description')|trans({}, 'EkynaCookieConsent') -}}
+            </p>
+        </div>
+        <div class="toggle">
+            {% for child in form if not child.rendered %}
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

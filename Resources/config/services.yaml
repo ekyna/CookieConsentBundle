@@ -1,0 +1,44 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    Ekyna\Bundle\CookieConsentBundle\Service\ConfigProviderInterface:
+        class: Ekyna\Bundle\CookieConsentBundle\Service\DefaultConfigProvider
+        arguments:
+            - [] # Replaced by DI extension
+
+    Ekyna\Bundle\CookieConsentBundle\Service\Manager:
+        arguments:
+            - '@Symfony\Component\HttpFoundation\RequestStack'
+            - '@Symfony\Component\Form\FormFactoryInterface'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '@Doctrine\ORM\EntityManagerInterface'
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\ConfigProviderInterface'
+
+    Ekyna\Bundle\CookieConsentBundle\Service\Renderer:
+        arguments:
+            - '@Twig\Environment'
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\Manager'
+
+    Ekyna\Bundle\CookieConsentBundle\Controller\CookieController:
+        public: true
+        arguments:
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\Manager'
+
+    Ekyna\Bundle\CookieConsentBundle\Form\Type\CookieConsentType:
+        public: true
+        arguments:
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\Manager'
+        tags:
+            - form.type
+
+    Ekyna\Bundle\CookieConsentBundle\Twig\Extension:
+        arguments:
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\Manager'
+            - '@Ekyna\Bundle\CookieConsentBundle\Service\Renderer'
+        tags:
+            - twig.extension

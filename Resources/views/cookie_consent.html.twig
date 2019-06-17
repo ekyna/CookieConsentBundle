@@ -1,0 +1,66 @@
+{% form_theme form '@EkynaCookieConsent/Form/theme.html.twig' %}
+
+{% block script %}
+    {% if options.dialog %}
+    <script type="text/javascript" src="{{ asset('bundles/ekynacookieconsent/js/cookie-consent.js') }}"></script>
+    {% endif %}
+{% endblock %}
+
+<div class="ekyna-cookie-consent{% if options.dialog %} framed {{ position }}{% endif %}">
+    {% block title -%}
+    <p class="title">
+        {% if translations['title'][1] is same as(false) -%}
+            {{ translations['title'][0] }}
+        {%- else -%}
+            {{ translations['title'][0]|trans({}, translations['title'][1]) }}
+        {%- endif %}
+    </p>
+    {%- endblock %}
+    {% block intro -%}
+    <p class="intro">
+        {% if translations['intro'][1] is same as(false) -%}
+            {{ translations['intro'][0] }}
+        {%- else -%}
+            {{ translations['intro'][0]|trans({}, translations['intro'][1]) }}
+        {%- endif %}
+    </p>
+    {%- endblock %}
+    {% block actions -%}
+    <p class="actions">
+        {% if read_more_route is not empty -%}
+        <a href="{{ path(read_more_route) }}">{{ 'read_more'|trans({}, 'EkynaCookieConsent') }}</a>
+        {%- endif %}
+        {% if not options.expanded %}
+        <a href="javascript:void(0)" class="ekyna-cookie-consent-settings">{{ 'settings'|trans({}, 'EkynaCookieConsent') }}</a>
+        {% endif %}
+    </p>
+    {%- endblock %}
+    {{ form_start(form) }}
+        <div class="categories"{% if not options.expanded %} style="display: none"{% endif %}>
+            <div class="category">
+                <div class="information">
+                    <p class="title">
+                        {{- 'category.necessary.title'|trans({}, 'EkynaCookieConsent') -}}
+                    </p>
+                    <p class="description">
+                        {{- 'category.necessary.description'|trans({}, 'EkynaCookieConsent') -}}
+                    </p>
+                </div>
+            </div>
+            {{ form_widget(form) }}
+        </div>
+        <p>
+            {% block all_button -%}
+                <button type="button" class="ekyna-cookie-consent-all">
+                    {{- 'button.all'|trans({}, 'EkynaCookieConsent') -}}
+                </button>
+            {%- endblock %}
+            {% block submit_button -%}
+                <button type="submit" class="ekyna-cookie-consent-submit">
+                    {{- 'button.submit'|trans({}, 'EkynaCookieConsent') -}}
+                </button>
+            {%- endblock %}
+        </p>
+    {{ form_end(form) }}
+</div>
+{% if options.dialog %}<div class="ekyna-cookie-consent-backdrop"></div>{% endif %}

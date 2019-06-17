@@ -1,0 +1,31 @@
+{
+    "name": "ekyna/cookie-consent-bundle",
+    "description": "Cookie consent (GDPR)",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Etienne Dauvergne",
+            "homepage": "http://ekyna.com"
+        }
+    ],
+    "keywords": [
+        "symfony",
+        "commerce",
+        "bundle"
+    ],
+    "homepage": "https://github.com/ekyna/CookieConsentBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2",
+        "symfony/form": "^3.4|^4.0",
+        "symfony/framework-bundle": "^3.4|^4.0",
+        "symfony/twig-bundle": "^3.4|^4.0",
+        "symfony/validation": "^3.4|^4.0",
+        "doctrine/doctrine-bundle": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ekyna\\Bundle\\CookieConsentBundle\\": ""
+        }
+    }
+}

@@ -1,0 +1,40 @@
+title: Utilisation des cookies
+intro: Nous utilisons les cookies pour vous fournir la meilleure expérience possible sur notre site internet.
+read_more: En savoir plus
+settings: Paramètres
+choice:
+    deny: Refuser
+    allow: Autoriser
+button:
+    all: Tout autoriser
+    submit: Enregistrer
+position:
+    centered: Centré
+    bottom-right: En bas à droite
+setting:
+    label: Cookies
+    position: Position
+    categories: Catégories
+    title: Titre
+    intro: Introduction
+category:
+    necessary:
+        title: Cookies nécéssaires
+        description: >
+            Certain cookies sont nécessaire au bon fonctionnement de ce site,
+            ils sont donc activé par défaut.
+    analytic:
+        title: Cookies d'analyse
+        description: >
+            Les cookies d'analyse nous aident à améliorer notre site
+            en recoltant des informations anonymes sur son utilisation.
+    marketing:
+        title: Cookies marketing
+        description: >
+            Les cookies marketing sont utilisées pour suivre les visiteurs entre
+            différents sites internet dans le but d'afficher des publicitées pertinentes.
+    social_network:
+        title: Social network cookies
+        description: >
+            Ces cookies vous permettent d'utiliser les fonctionnalités des réseaux sociaux,
+            comme la connexion ou le partage de contenu avec d'autres personnes.
