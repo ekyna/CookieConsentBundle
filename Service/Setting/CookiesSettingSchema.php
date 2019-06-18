@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * Class CookiesSettingSchema
@@ -33,17 +32,17 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
     {
         $builder
             ->setDefaults(array_merge([
-                'position'   => Position::CENTERED,
-                'categories' => Category::getDefault(),
-                'title'      => $this->createI18nParameter('Cookies on our website'),
-                'intro'      => $this->createI18nParameter('This website uses cookies to ensure you get the best experience on our website.'),
+                'position' => Position::CENTERED,
+                //'categories' => Category::getDefault(),
+                'title'    => $this->createI18nParameter('Cookies on our website'),
+                'intro'    => $this->createI18nParameter('This website uses cookies to ensure you get the best experience on our website.'),
             ], $this->defaults))
             ->setAllowedTypes('position', 'string')
-            ->setAllowedTypes('categories', 'array')
+            //->setAllowedTypes('categories', 'array')
             ->setAllowedTypes('title', I18nParameter::class)
             ->setAllowedTypes('intro', I18nParameter::class)
             ->setAllowedValues('position', Position::getConstants())
-            ->setAllowedValues('categories', function ($value) {
+            /*->setAllowedValues('categories', function ($value) {
                 foreach ($value as $c) {
                     if (!Category::isValid($c)) {
                         return false;
@@ -51,7 +50,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                 }
 
                 return true;
-            });
+            })*/;
     }
 
     /**
@@ -72,7 +71,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                     ]),
                 ],
             ])
-            ->add('categories', Type\ChoiceType::class, [
+            /*->add('categories', Type\ChoiceType::class, [
                 'label'       => 'setting.categories',
                 'choices'     => Category::getChoices(),
                 'required'    => true,
@@ -87,31 +86,23 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                         'callback' => [Category::class, 'getConstants'],
                     ]),
                 ],
-            ])
+            ])*/
             ->add('title', I18nParameterType::class, [
                 'label'        => 'setting.title',
+                'required'     => false,
                 'form_type'    => Type\TextareaType::class,
                 'form_options' => [
-                    'label'       => false,
-                    'constraints' => [
-                        new Constraints\NotBlank(),
-                    ],
-                ],
-                'constraints'  => [
-                    new Valid(),
+                    'label'    => false,
+                    'required' => false,
                 ],
             ])
             ->add('intro', I18nParameterType::class, [
                 'label'        => 'setting.intro',
+                'required'     => false,
                 'form_type'    => Type\TextareaType::class,
                 'form_options' => [
-                    'label'       => false,
-                    'constraints' => [
-                        new Constraints\NotBlank(),
-                    ],
-                ],
-                'constraints'  => [
-                    new Valid(),
+                    'label'    => false,
+                    'required' => false,
                 ],
             ]);
     }
