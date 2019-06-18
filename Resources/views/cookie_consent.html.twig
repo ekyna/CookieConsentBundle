@@ -50,14 +50,14 @@
             {{ form_widget(form) }}
         </div>
         <p>
-            {% block all_button -%}
-                <button type="button" class="ekyna-cookie-consent-all">
-                    {{- 'button.all'|trans({}, 'EkynaCookieConsent') -}}
-                </button>
-            {%- endblock %}
             {% block submit_button -%}
                 <button type="submit" class="ekyna-cookie-consent-submit">
                     {{- 'button.submit'|trans({}, 'EkynaCookieConsent') -}}
+                </button>
+            {%- endblock %}
+            {% block all_button -%}
+                <button type="button" class="ekyna-cookie-consent-all">
+                    {{- 'button.all'|trans({}, 'EkynaCookieConsent') -}}
                 </button>
             {%- endblock %}
         </p>

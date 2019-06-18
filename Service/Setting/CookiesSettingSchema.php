@@ -34,8 +34,8 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
             ->setDefaults(array_merge([
                 'position' => Position::CENTERED,
                 //'categories' => Category::getDefault(),
-                'title'    => $this->createI18nParameter('Cookies on our website'),
-                'intro'    => $this->createI18nParameter('This website uses cookies to ensure you get the best experience on our website.'),
+                'title'    => $this->createI18nParameter(''),
+                'intro'    => $this->createI18nParameter(''),
             ], $this->defaults))
             ->setAllowedTypes('position', 'string')
             //->setAllowedTypes('categories', 'array')

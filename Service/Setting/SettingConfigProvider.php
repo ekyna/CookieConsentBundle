@@ -50,8 +50,13 @@ class SettingConfigProvider extends DefaultConfigProvider
 
         $config['position'] = $this->setting->getParameter('cookies.position');
 //        $config['categories'] = $this->setting->getParameter('cookies.categories');
-        $config['translations']['title'] = [$this->setting->getParameter('cookies.title', $locale), false];
-        $config['translations']['intro'] = [$this->setting->getParameter('cookies.intro', $locale), false];
+        foreach (['title', 'intro'] as $parameter) {
+            $value = $title = $this->setting->getParameter('cookies.' . $parameter, $locale);
+            if (empty($value)) {
+                continue;
+            }
+            $config['translations'][$parameter] = [$value, false];
+        }
 
         return $this->config = $config;
     }
