@@ -14,6 +14,7 @@ position:
 setting:
     label: Cookies
     position: Position
+    backdrop: Backdrop
     categories: Categories
     title: Title
     intro: Intro

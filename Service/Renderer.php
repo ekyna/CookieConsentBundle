@@ -63,6 +63,7 @@ class Renderer
 
         return $this->twig->render('@EkynaCookieConsent/cookie_consent.html.twig', [
             'position'        => $config['position'],
+            'backdrop'        => $config['backdrop'],
             'read_more_route' => $config['read_more_route'],
             'translations'    => $config['translations'],
             'options'         => $options,

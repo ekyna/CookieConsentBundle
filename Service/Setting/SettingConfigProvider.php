@@ -49,7 +49,7 @@ class SettingConfigProvider extends DefaultConfigProvider
         $locale = $this->localeProvider->getCurrentLocale();
 
         $config['position'] = $this->setting->getParameter('cookies.position');
-//        $config['categories'] = $this->setting->getParameter('cookies.categories');
+        $config['backdrop'] = $this->setting->getParameter('cookies.backdrop');
         foreach (['title', 'intro'] as $parameter) {
             $value = $title = $this->setting->getParameter('cookies.' . $parameter, $locale);
             if (empty($value)) {

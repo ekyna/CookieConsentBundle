@@ -7,68 +7,74 @@ document.addEventListener("DOMContentLoaded", function() {
     var cookieConsentForm = cookieConsent.getElementsByTagName('form')[0];
     var categories = cookieConsentForm.getElementsByClassName('categories')[0];
 
-    if (cookieConsentForm) {
-        var submit = function() {
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    cookieConsent.style.display = 'none';
-                    if (cookieConsentBackdrop) {
-                        cookieConsentBackdrop.style.display = 'none';
-                    }
-                } else {
-                    enableForm(cookieConsentForm);
-                }
-            };
-            xhr.open('POST', cookieConsentForm.action);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(serializeForm(cookieConsentForm));
+    if (!cookieConsentForm) {
+        return;
+    }
 
-            disableForm(cookieConsentForm);
+    var submit = function() {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                cookieConsent.style.display = 'none';
+                if (cookieConsentBackdrop) {
+                    cookieConsentBackdrop.style.display = 'none';
+                }
+                var resp = JSON.parse(xhr.response);
+                if (resp.hasOwnProperty('reload') && resp.reload) {
+                    document.location.reload();
+                }
+            } else {
+                enableForm(cookieConsentForm);
+            }
         };
+        xhr.open('POST', cookieConsentForm.action);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(serializeForm(cookieConsentForm));
 
-        if (buttonSettings) {
-            buttonSettings.addEventListener('click', function (event) {
-                event.preventDefault();
+        disableForm(cookieConsentForm);
+    };
 
-                if (categories.style.display === 'block') {
-                    categories.style.display = 'none';
-                } else {
-                    categories.style.display = 'block';
+    if (buttonSettings) {
+        buttonSettings.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            if (categories.style.display === 'block') {
+                categories.style.display = 'none';
+            } else {
+                categories.style.display = 'block';
+            }
+
+            return false;
+        }, false);
+    }
+
+    if (buttonSubmit) {
+        buttonSubmit.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            submit();
+
+            return false;
+        }, false);
+    }
+
+    if (buttonAll) {
+        buttonAll.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            var inputs = cookieConsentForm.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i],
+                    attr = input.attributes;
+                if (attr.getNamedItem('type').value === 'radio') {
+                    input.checked = attr.getNamedItem('value').value === '1';
                 }
+            }
 
-                return false;
-            }, false);
-        }
+            submit();
 
-        if (buttonSubmit) {
-            buttonSubmit.addEventListener('click', function (event) {
-                event.preventDefault();
-
-                submit();
-
-                return false;
-            }, false);
-        }
-
-        if (buttonAll) {
-            buttonAll.addEventListener('click', function (event) {
-                event.preventDefault();
-
-                var inputs = cookieConsentForm.getElementsByTagName('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    var input = inputs[i],
-                        attr = input.attributes;
-                    if (attr.getNamedItem('type').value === 'radio') {
-                        input.checked = attr.getNamedItem('value').value === '1';
-                    }
-                }
-
-                submit();
-
-                return false;
-            }, false);
-        }
+            return false;
+        }, false);
     }
 });
 

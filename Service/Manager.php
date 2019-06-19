@@ -128,13 +128,17 @@ class Manager
     {
         $data = $this->getCookieData();
 
+        $reload = !empty(array_diff_assoc($data['categories'], $categories));
+
         $data['categories'] = $categories;
 
         $this->setCookieData($data);
 
         $cookie = new Cookie($this->getConfig()['name'], json_encode($data), new \DateTime('+1 year'), '/', null, null, true, true);
-
         $response->headers->setCookie($cookie);
+
+        $response->setContent(json_encode(['reload' => $reload]));
+        $response->headers->set('Content-Type', 'application/json');
 
         if (!$this->getConfig()['persist'] || empty($ip)) {
             return;
@@ -143,8 +147,7 @@ class Manager
         $consent = $this->entityManager->getRepository(CookieConsent::class)->findOneBy(['key' => $data['key']]);
         if (!$consent) {
             $consent = new CookieConsent();
-            $consent
-                ->setKey($data['key']);
+            $consent->setKey($data['key']);
         }
 
         $consent
@@ -174,7 +177,9 @@ class Manager
      */
     public function isCategoryAllowed(string $category): bool
     {
-        return in_array($category, $this->getCookieData()['categories'], true);
+        $categories = $this->getCookieData()['categories'];
+
+        return isset($categories[$category]) && 1 === $categories[$category];
     }
 
     /**

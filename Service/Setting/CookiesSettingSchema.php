@@ -2,7 +2,6 @@
 
 namespace Ekyna\Bundle\CookieConsentBundle\Service\Setting;
 
-use Ekyna\Bundle\CookieConsentBundle\Model\Category;
 use Ekyna\Bundle\CookieConsentBundle\Model\Position;
 use Ekyna\Bundle\SettingBundle\Form\Type\I18nParameterType;
 use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
@@ -33,24 +32,15 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
         $builder
             ->setDefaults(array_merge([
                 'position' => Position::CENTERED,
-                //'categories' => Category::getDefault(),
+                'backdrop' => false,
                 'title'    => $this->createI18nParameter(''),
                 'intro'    => $this->createI18nParameter(''),
             ], $this->defaults))
             ->setAllowedTypes('position', 'string')
-            //->setAllowedTypes('categories', 'array')
+            ->setAllowedTypes('backdrop', 'bool')
             ->setAllowedTypes('title', I18nParameter::class)
             ->setAllowedTypes('intro', I18nParameter::class)
-            ->setAllowedValues('position', Position::getConstants())
-            /*->setAllowedValues('categories', function ($value) {
-                foreach ($value as $c) {
-                    if (!Category::isValid($c)) {
-                        return false;
-                    }
-                }
-
-                return true;
-            })*/;
+            ->setAllowedValues('position', Position::getConstants());
     }
 
     /**
@@ -71,22 +61,13 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
                     ]),
                 ],
             ])
-            /*->add('categories', Type\ChoiceType::class, [
-                'label'       => 'setting.categories',
-                'choices'     => Category::getChoices(),
-                'required'    => true,
-                'multiple'    => true,
-                'expanded'    => true,
+            ->add('backdrop', Type\CheckboxType::class, [
+                'label'       => 'setting.backdrop',
+                'required'    => false,
                 'constraints' => [
-                    new Constraints\Count([
-                        'min' => 1,
-                    ]),
-                    new Constraints\Choice([
-                        'multiple' => true,
-                        'callback' => [Category::class, 'getConstants'],
-                    ]),
+                    new Constraints\NotNull(),
                 ],
-            ])*/
+            ])
             ->add('title', I18nParameterType::class, [
                 'label'        => 'setting.title',
                 'required'     => false,
