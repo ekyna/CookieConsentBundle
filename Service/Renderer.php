@@ -43,6 +43,12 @@ class Renderer
      */
     public function render(array $options = []): string
     {
+        $config = $this->manager->getConfig();
+
+        if (!$config['enabled']) {
+            return '';
+        }
+
         $options = array_replace([
             'render_if_saved' => false, // Whether to render even if consent has been saved.
             'expanded'        => false, // Whether to show settings
@@ -56,8 +62,6 @@ class Renderer
         if (!$options['dialog']) {
             $options['expanded'] = true;
         }
-
-        $config = $this->manager->getConfig();
 
         $form = $this->manager->getForm();
 

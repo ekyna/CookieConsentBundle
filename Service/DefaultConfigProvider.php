@@ -43,6 +43,7 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private function getDefault(): array
     {
         return [
+            'enabled'         => true,
             'name'            => 'Cookie_Consent',
             'read_more_route' => null,
             'categories'      => Category::getDefault(),

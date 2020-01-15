@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
+                ->booleanNode('enabled')->defaultTrue()->end()
                 ->scalarNode('name')->end()
                 ->scalarNode('read_more_route')->defaultNull()->end()
                 ->enumNode('position')
