@@ -64,6 +64,9 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
             ->add('backdrop', Type\CheckboxType::class, [
                 'label'       => 'setting.backdrop',
                 'required'    => false,
+                'attr'        => [
+                    'align_with_widget' => true,
+                ],
                 'constraints' => [
                     new Constraints\NotNull(),
                 ],
