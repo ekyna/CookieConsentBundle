@@ -2,7 +2,7 @@
 
 {% block script %}
     {% if options.dialog %}
-    <script type="text/javascript" src="{{ asset('bundles/ekynacookieconsent/js/cookie-consent.js') }}"></script>
+    <script type="text/javascript" src="{{ absolute_url(asset('bundles/ekynacookieconsent/js/cookie-consent.js')) }}"></script>
     {% endif %}
 {% endblock %}
 
