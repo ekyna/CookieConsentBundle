@@ -24,7 +24,7 @@ class Renderer
 
     public function isCategoryAllowed(string $category): bool
     {
-        return $this->isCategoryAllowed($category);
+        return $this->manager->isCategoryAllowed($category);
     }
 
     /**
