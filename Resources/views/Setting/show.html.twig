@@ -1,22 +1,18 @@
 {{ show_row(('position.' ~ settings.cookies.position)|trans({}, 'EkynaCookieConsent'), 'text', {
-    'label': 'setting.position',
-    'trans_domain': 'EkynaCookieConsent',
+    'label': t('setting.position', {}, 'EkynaCookieConsent'),
     'label_col': 3
 }) }}
 {{ show_row(settings.cookies.backdrop, 'boolean', {
-    'label': 'setting.backdrop',
-    'trans_domain': 'EkynaCookieConsent',
+    'label': t('setting.backdrop', {}, 'EkynaCookieConsent'),
     'label_col': 3
 }) }}
 {{ show_row(settings.cookies.title, 'setting_i18n_parameter', {
-    'label': 'setting.title',
-    'trans_domain': 'EkynaCookieConsent',
+    'label': t('setting.title', {}, 'EkynaCookieConsent'),
     'type': 'text',
     'label_col': 3
 }) }}
 {{ show_row(settings.cookies.intro, 'setting_i18n_parameter', {
-    'label': 'setting.intro',
-    'trans_domain': 'EkynaCookieConsent',
+    'label': t('setting.intro', {}, 'EkynaCookieConsent'),
     'type': 'text',
     'label_col': 3
 }) }}

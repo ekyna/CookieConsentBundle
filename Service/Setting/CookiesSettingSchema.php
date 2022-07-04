@@ -10,7 +10,7 @@ use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\LocalizedSchemaInterface;
 use Ekyna\Bundle\SettingBundle\Schema\LocalizedSchemaTrait;
-use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Bundle\SettingBundle\Schema\SettingBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +28,7 @@ class CookiesSettingSchema extends AbstractSchema implements LocalizedSchemaInte
 {
     use LocalizedSchemaTrait;
 
-    public function buildSettings(SettingsBuilder $builder): void
+    public function buildSettings(SettingBuilder $builder): void
     {
         $builder
             ->setDefaults(array_merge([
